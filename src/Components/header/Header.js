@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
-import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaTimes, FaUserCircle } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../Firebase/config";
+import {
+  REMOVE_ACTIVE_USER,
+  SET_ACTIVE_USER,
+} from "../../Redux/features/authSlice";
+import ShowOnLogin, { ShowOnLogout } from "../hiddenLinks/hiddenLinks";
 import { useDispatch, useSelector } from "react-redux";
 
 const logo = (
@@ -28,12 +35,57 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
+  const fixNavbar = () => {
+    if (window.scrollY > 50) {
+      setScrollPage(true);
+    } else {
+      setScrollPage(false);
+    }
+  };
+  window.addEventListener("scroll", fixNavbar);
+
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
   const hideMenu = () => {
     setShowMenu(false);
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // console.log(user);
+        if (user.displayName == null) {
+          const u1 = user.email.slice(0, -10);
+          const uName = u1.charAt(0).toUpperCase() + u1.slice(1);
+          setdisplayName(uName);
+        } else {
+          setdisplayName(user.displayName);
+        }
+        dispatch(
+          SET_ACTIVE_USER({
+            email: user.email,
+            userName: user.displayName ? user.displayName : displayName,
+            userID: user.uid,
+          })
+        );
+      } else {
+        setdisplayName("");
+        dispatch(REMOVE_ACTIVE_USER());
+      }
+    });
+  }, [dispatch, displayName]);
+
+  const LogoutUser = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("Logout successfully.😉");
+        navigate("/");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
@@ -84,22 +136,42 @@ const Header = () => {
             </ul>
             <div className={styles["header-right"]} onClick={hideMenu}>
               <span className={styles.links}>
-                <NavLink to="/login" className={activeLink}>
-                  Login
-                </NavLink>
+                <ShowOnLogout>
+                  <NavLink to="/login" className={activeLink}>
+                    Login 
+                  </NavLink>
+                </ShowOnLogout>
 
-                <a href="#home" style={{ color: "#ff7722" }}>
-                  <FaUserCircle size={16} />
-                  Hi, {displayName}
-                </a>
+                <ShowOnLogout>
+                  <NavLink to="/register" className={activeLink}>
+                    Register
+                  </NavLink>
+                </ShowOnLogout>
 
-                <NavLink to="/order-history" className={activeLink}>
-                  My Account
-                </NavLink>
+                <ShowOnLogin>
+                  <a href="#home" style={{ color: "#ff7722" }}>
+                    <FaUserCircle size={16} />
+                    Hi, {displayName}
+                  </a>
+                </ShowOnLogin>
 
-                <NavLink to="/" onClick={""}>
-                  Logout
-                </NavLink>
+                <ShowOnLogin>
+                  <NavLink to="/order-history" className={activeLink}>
+                    My Account
+                  </NavLink>
+                </ShowOnLogin>
+
+                <ShowOnLogin>
+                  <NavLink to="/order-history" className={activeLink}>
+                    My Downloads
+                  </NavLink>
+                </ShowOnLogin>
+
+                <ShowOnLogin>
+                  <NavLink to="/" onClick={LogoutUser}>
+                    Logout
+                  </NavLink>
+                </ShowOnLogin>
               </span>
             </div>
           </nav>
