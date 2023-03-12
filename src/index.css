@@ -430,3 +430,44 @@ a {
 a:hover {
   color: var(--color-dark);
 }
+
+.Toastify__toast--error {
+  font-size: 1.3rem;
+}
+
+.Toastify__toast--success {
+  font-size: 1.3rem;
+}
+
+.banner-slider-folder {
+  position: relative;
+}
+.content {
+  position: absolute;
+  top: 20%;
+  left: 13%;
+  z-index: 10;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.banner-slider-folder .slick-slider .slick-prev {
+  left: 23px;
+  z-index: 2;
+}
+
+.banner-slider-folder .slick-slider .slick-prev:before {
+  font-size: 35px;
+}
+
+.banner-slider-folder .slick-slider .slick-next:before {
+  font-size: 35px;
+}
+
+.banner-slider-folder .slick-slider .slick-next {
+  right: 35px;
+}
+
+.banner-slider-image img {
+  width: 100%;
+}

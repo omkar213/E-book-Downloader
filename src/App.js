@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 //components imports
 import {Header, Footer} from './Components/ImportIndex'
 //pages imports
-import {Home, Contact, About, Login, Register, Reset} from "./Pages/ImportIndex";
+import {Home, Contact, About, Blogs, Login, Register, Reset} from "./Pages/ImportIndex";
 
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
           <Route path="/" element={<Home/>}/>  
           <Route path="/contact" element={<Contact/>}/>  
           <Route path="/about" element={<About/>}/>  
+          <Route path="/blog" element={<Blogs/>}/>  
           <Route path="/login" element={<Login/>}/>  
           <Route path="/register" element={<Register/>}/>  
           <Route path="/reset" element={<Reset/>}/>  

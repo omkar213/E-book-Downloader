@@ -113,11 +113,11 @@ const Header = () => {
                 {logo}
                 <FaTimes size={22} color="#fff" onClick={hideMenu} />
               </li>
-              <li>
+              {/* <li>
                 <Link to="/admin/home">
                   <button className="--btn --btn-primary">Admin</button>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <NavLink to="/" className={activeLink}>
                   Home
@@ -131,6 +131,11 @@ const Header = () => {
               <li>
                 <NavLink to="/about" className={activeLink}>
                   About Us
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/blog" className={activeLink}>
+                  Blogs
                 </NavLink>
               </li>
             </ul>

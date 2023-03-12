@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
+import Swiperslider from '../../Components/Slider/Swiperslider';
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <Swiperslider/>
   )
 }
 
