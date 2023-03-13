@@ -11,6 +11,7 @@ import {
   REMOVE_ACTIVE_USER,
   SET_ACTIVE_USER,
 } from "../../Redux/features/authSlice";
+import AdminOnlyRoute, { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
 import ShowOnLogin, { ShowOnLogout } from "../hiddenLinks/hiddenLinks";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -113,11 +114,13 @@ const Header = () => {
                 {logo}
                 <FaTimes size={22} color="#fff" onClick={hideMenu} />
               </li>
-              {/* <li>
-                <Link to="/admin/home">
-                  <button className="--btn --btn-primary">Admin</button>
-                </Link>
-              </li> */}
+              <li>
+                <AdminOnlyLink>
+                  <Link to="/admin/home">
+                    <button className="--btn --btn-primary">Admin</button>
+                  </Link>
+                </AdminOnlyLink>
+              </li>
               <li>
                 <NavLink to="/" className={activeLink}>
                   Home
@@ -143,7 +146,7 @@ const Header = () => {
               <span className={styles.links}>
                 <ShowOnLogout>
                   <NavLink to="/login" className={activeLink}>
-                    Login 
+                    Login
                   </NavLink>
                 </ShowOnLogout>
 

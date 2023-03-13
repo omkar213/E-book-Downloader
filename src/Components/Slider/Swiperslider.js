@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Slider from "react-slick";
 import { sliderData } from "./slider-data";
 
 const Swiperslider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
+ 
   const settings = {
     arrows: true,
     infinite: true,
