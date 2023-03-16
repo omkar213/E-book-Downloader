@@ -163,11 +163,11 @@ const Header = () => {
                   </a>
                 </ShowOnLogin>
 
-                <ShowOnLogin>
+                {/* <ShowOnLogin>
                   <NavLink to="/order-history" className={activeLink}>
                     My Account
                   </NavLink>
-                </ShowOnLogin>
+                </ShowOnLogin> */}
 
                 <ShowOnLogin>
                   <NavLink to="/my-downloads" className={activeLink}>
