@@ -459,15 +459,38 @@ a:hover {
 .banner-slider-folder .slick-slider .slick-prev:before {
   font-size: 35px;
 }
-
 .banner-slider-folder .slick-slider .slick-next:before {
   font-size: 35px;
 }
-
 .banner-slider-folder .slick-slider .slick-next {
   right: 35px;
 }
-
 .banner-slider-image img {
   width: 100%;
+  filter: brightness(0.5);
+  display: block;
+}
+.banner-container{
+  position: relative;
+}
+.content {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  right: 0%;
+  z-index: 10;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  margin: auto;
+  transform: translateY(-50%);
+  max-width: 950px;
+  text-align: center;
+}
+.content-heading {
+  color: white;
+  font-size: 5rem;
+}
+.content-desc {
+  color: white;
+  font-size: 2rem;
 }

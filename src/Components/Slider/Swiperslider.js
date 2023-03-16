@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import { sliderData } from "./slider-data";
 
 const Swiperslider = () => {
- 
   const settings = {
     arrows: true,
     infinite: true,
@@ -52,13 +51,13 @@ const Swiperslider = () => {
         <Slider {...settings}>
           {sliderData.map((slide, index) => {
             return (
-              <div className="banner-slider-image">
-                <img src={slide.image} alt="banner" />
+              <div className="banner-container" key={index}>
+                <div className="banner-slider-image" >
+                  <img src={slide.image} alt="banner" />
+                </div>
                 <div className="content">
                   <h2 className="content-heading">{slide.heading}</h2>
-                  <p className="content-desc">
-                    {slide.desc}
-                  </p>
+                  <p className="content-desc">{slide.desc}</p>
                 </div>
               </div>
             );
