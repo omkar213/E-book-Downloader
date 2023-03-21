@@ -1,6 +1,7 @@
 import styles from "./ViewBooks.module.scss";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Notiflix from "notiflix";
 import {
   collection,
   deleteDoc,
@@ -14,10 +15,15 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteObject, ref } from "firebase/storage";
 import Loader from './../../loader/Loader';
+import { useDispatch } from "react-redux";
+import { store_Book } from "../../../Redux/features/booksSlice";
+
 
 const ViewBooks = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const getBooks = () => {
     setIsLoading(true);
@@ -28,14 +34,19 @@ const ViewBooks = () => {
       const q = query(booksRef, orderBy("createAt", "desc"));
 
       onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs);
+        // console.log(snapshot.docs);
         const allBooks = snapshot.docs.map((doc, index) => ({
           id: doc.id,
           ...doc.data(),
         }));
         setIsLoading(false);
-        console.log(allBooks);
+        // console.log(allBooks);
         setBooks(allBooks);
+        dispatch(
+          store_Book({
+            books: allBooks
+          })
+          )
       });
     } catch (error) {
       setIsLoading(false);
@@ -46,6 +57,29 @@ const ViewBooks = () => {
   useEffect(() => {
     getBooks();
   }, []);
+
+  const confirmDelete = (id, imageUrl,file) => {
+    Notiflix.Confirm.show(
+      'Delete Book',
+      'Do you really want to delete the book?',
+      'Delete',
+      'Cancel',
+      function okCb() {
+        deleteBook(id, imageUrl,file)
+      },
+      function cancelCb() {
+        console.log("delete cancel")
+      },
+      {
+        width: '320px',
+        borderRadius: '3px',
+        titleColor: "orangered",
+        okButtonBackground: "orangered",
+        cssAnimationStyle: "zoom"
+        // etc...
+      },
+    );
+  }
 
   const deleteBook = async (id, imageUrl, file) => {
     try {
@@ -109,7 +143,7 @@ const ViewBooks = () => {
                     <td>{category}</td>
                     <td>{publisher}</td>
                     <td className={styles.icons}>
-                      <Link to="/admin/add-book">
+                      <Link to={`/admin/add-book/${id}`}>
                         <FaEdit size={20} color="green" />
                       </Link>
                       &nbsp;
@@ -117,7 +151,7 @@ const ViewBooks = () => {
                         className=""
                         size={18}
                         color="red"
-                        onClick={() => deleteBook(id, imageUrl, file)}
+                        onClick={() => confirmDelete(id, imageUrl, file)}
                       />
                     </td>
                   </tr>
