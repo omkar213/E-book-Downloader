@@ -1,6 +1,7 @@
 import styles from "./ViewBooks.module.scss";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Notiflix from "notiflix";
 import {
   collection,
   deleteDoc,
@@ -13,39 +14,49 @@ import { db, storage } from "../../../Firebase/config";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteObject, ref } from "firebase/storage";
-import Loader from './../../loader/Loader';
+import Loader from "./../../loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { selectBooks, store_Book } from "../../../Redux/features/booksSlice";
+import useFetchCollection from "./../../../CustomHooks/useFetchCollection";
+
 
 const ViewBooks = () => {
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isLoading } = useFetchCollection("books");
 
-  const getBooks = () => {
-    setIsLoading(true);
+  const books = useSelector(selectBooks)
 
-    try {
-      const booksRef = collection(db, "books");
-
-      const q = query(booksRef, orderBy("createAt", "desc"));
-
-      onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs);
-        const allBooks = snapshot.docs.map((doc, index) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setIsLoading(false);
-        console.log(allBooks);
-        setBooks(allBooks);
-      });
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.message);
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getBooks();
-  }, []);
+    dispatch(
+      store_Book({
+        books: data,
+      })
+    );
+  },[dispatch, data]);
+
+  const confirmDelete = (id, imageUrl, file) => {
+    Notiflix.Confirm.show(
+      "Delete Book",
+      "Do you really want to delete the book?",
+      "Delete",
+      "Cancel",
+      function okCb() {
+        deleteBook(id, imageUrl, file);
+      },
+      function cancelCb() {
+        console.log("delete cancel");
+      },
+      {
+        width: "320px",
+        borderRadius: "3px",
+        titleColor: "orangered",
+        okButtonBackground: "orangered",
+        cssAnimationStyle: "zoom",
+        // etc...
+      }
+    );
+  };
 
   const deleteBook = async (id, imageUrl, file) => {
     try {
@@ -62,7 +73,7 @@ const ViewBooks = () => {
   };
   return (
     <>
-    {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       <div className={styles.table}>
         <h2>All Books</h2>
         {books.length === 0 ? (
@@ -109,7 +120,7 @@ const ViewBooks = () => {
                     <td>{category}</td>
                     <td>{publisher}</td>
                     <td className={styles.icons}>
-                      <Link to="/admin/add-book">
+                      <Link to={`/admin/add-book/${id}`}>
                         <FaEdit size={20} color="green" />
                       </Link>
                       &nbsp;
@@ -117,7 +128,7 @@ const ViewBooks = () => {
                         className=""
                         size={18}
                         color="red"
-                        onClick={() => deleteBook(id, imageUrl, file)}
+                        onClick={() => confirmDelete(id, imageUrl, file)}
                       />
                     </td>
                   </tr>

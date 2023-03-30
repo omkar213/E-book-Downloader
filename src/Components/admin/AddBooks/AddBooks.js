@@ -1,12 +1,15 @@
 import { useState } from "react";
 import Card from "../../card/Card";
 import styles from "./AddBooks.module.scss";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../../../Firebase/config";
 import { toast } from "react-toastify";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { addDoc, collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../loader/Loader";
+import { useSelector } from 'react-redux';
+import { selectBooks } from "../../../Redux/features/booksSlice";
+
 
 const categories = [
   { id: 1, name: "Editor's Picks" },
@@ -41,8 +44,13 @@ const initialState = {
 };
 
 const AddBooks = () => {
-  const [book, setBook] = useState({
-    ...initialState
+  const {id} = useParams()
+  const books = useSelector(selectBooks);
+  const bookEdit = books.find((item) => item.id === id)
+
+  const [book, setBook] = useState(() => {
+    const newState = detectForm(id, {...initialState}, bookEdit)
+    return newState;
   });
 
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -50,6 +58,16 @@ const AddBooks = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  
+
+  function detectForm(id, f1, f2){
+    if(id === "ADD"){
+      return f1
+    }else{
+      return f2
+    }
+  } 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -140,13 +158,45 @@ const AddBooks = () => {
     }
   };
 
+  const editBook = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    //deleting prvious image
+    if (book.imageUrl !== bookEdit.imageUrl) {
+      const storageRef = ref(storage, bookEdit.imageUrl);
+      deleteObject(storageRef);
+    }
+
+    try {
+      setDoc(doc(db, "books", id), {
+        name: book.name,
+        imageUrl: book.imageUrl,
+        category: book.category,
+        author: book.author,
+        desc: book.desc,
+        language: book.language,
+        publisher: book.publisher,
+        file: book.file,
+        createAt: bookEdit.createAt,
+        editedAt: Timestamp.now().toDate(),
+      });
+      setIsLoading(false);
+      toast.success("Book Edited Successfully");
+      navigate("/admin/all-book");
+    } catch (error) {
+      setIsLoading(false);
+      toast.error(error.message);
+    }
+  }
+
   return (
     <>
     {isLoading && <Loader />}
       <div className={styles.product}>
-        <h1>Add New Books</h1>
+        <h2>{detectForm(id, "Add New Book", "Edit Book Details")}</h2>
         <Card cardClass={styles.card}>
-          <form onSubmit={addBook}>
+          <form onSubmit={detectForm(id, addBook, editBook)}>
             <label>Book Name / Title: </label>
             <input
               type="text"
@@ -280,7 +330,7 @@ const AddBooks = () => {
               rows="10"
             ></textarea>
 
-            <button className="--btn --btn-primary">Save Book</button>
+            <button className="--btn --btn-primary">{detectForm(id, "Save Book", "Edit Book")}</button>
           </form>
         </Card>
       </div>
