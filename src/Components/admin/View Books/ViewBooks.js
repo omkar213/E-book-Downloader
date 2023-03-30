@@ -14,72 +14,49 @@ import { db, storage } from "../../../Firebase/config";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteObject, ref } from "firebase/storage";
-import Loader from './../../loader/Loader';
-import { useDispatch } from "react-redux";
-import { store_Book } from "../../../Redux/features/booksSlice";
+import Loader from "./../../loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { selectBooks, store_Book } from "../../../Redux/features/booksSlice";
+import useFetchCollection from "./../../../CustomHooks/useFetchCollection";
 
 
 const ViewBooks = () => {
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isLoading } = useFetchCollection("books");
+
+  const books = useSelector(selectBooks)
 
   const dispatch = useDispatch();
 
-  const getBooks = () => {
-    setIsLoading(true);
-
-    try {
-      const booksRef = collection(db, "books");
-
-      const q = query(booksRef, orderBy("createAt", "desc"));
-
-      onSnapshot(q, (snapshot) => {
-        // console.log(snapshot.docs);
-        const allBooks = snapshot.docs.map((doc, index) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setIsLoading(false);
-        // console.log(allBooks);
-        setBooks(allBooks);
-        dispatch(
-          store_Book({
-            books: allBooks
-          })
-          )
-      });
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.message);
-    }
-  };
-
   useEffect(() => {
-    getBooks();
-  }, []);
+    dispatch(
+      store_Book({
+        books: data,
+      })
+    );
+  },[dispatch, data]);
 
-  const confirmDelete = (id, imageUrl,file) => {
+  const confirmDelete = (id, imageUrl, file) => {
     Notiflix.Confirm.show(
-      'Delete Book',
-      'Do you really want to delete the book?',
-      'Delete',
-      'Cancel',
+      "Delete Book",
+      "Do you really want to delete the book?",
+      "Delete",
+      "Cancel",
       function okCb() {
-        deleteBook(id, imageUrl,file)
+        deleteBook(id, imageUrl, file);
       },
       function cancelCb() {
-        console.log("delete cancel")
+        console.log("delete cancel");
       },
       {
-        width: '320px',
-        borderRadius: '3px',
+        width: "320px",
+        borderRadius: "3px",
         titleColor: "orangered",
         okButtonBackground: "orangered",
-        cssAnimationStyle: "zoom"
+        cssAnimationStyle: "zoom",
         // etc...
-      },
+      }
     );
-  }
+  };
 
   const deleteBook = async (id, imageUrl, file) => {
     try {
@@ -96,7 +73,7 @@ const ViewBooks = () => {
   };
   return (
     <>
-    {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       <div className={styles.table}>
         <h2>All Books</h2>
         {books.length === 0 ? (

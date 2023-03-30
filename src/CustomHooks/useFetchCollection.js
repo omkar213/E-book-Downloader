@@ -4,7 +4,7 @@ import { db } from "../Firebase/config";
 import { toast } from "react-toastify";
 
 
-const useFetchCollection = ({collectionName}) => {
+const useFetchCollection = (collectionName) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,7 +23,7 @@ const useFetchCollection = ({collectionName}) => {
           ...doc.data(),
         }));
         setIsLoading(false);
-        console.log(allData);
+        // console.log(allData);
         setData(allData);
       });
     } catch (error) {

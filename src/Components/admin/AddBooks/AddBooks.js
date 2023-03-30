@@ -4,7 +4,7 @@ import styles from "./AddBooks.module.scss";
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../../../Firebase/config";
 import { toast } from "react-toastify";
-import { addDoc, collection, doc, setDoc, Timestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../loader/Loader";
 import { useSelector } from 'react-redux';
@@ -165,12 +165,6 @@ const AddBooks = () => {
     //deleting prvious image
     if (book.imageUrl !== bookEdit.imageUrl) {
       const storageRef = ref(storage, bookEdit.imageUrl);
-      deleteObject(storageRef);
-    }
-
-    //deleting prvious pdf file
-    if (book.file !== bookEdit.file) {
-      const storageRef = ref(storage, bookEdit.file);
       deleteObject(storageRef);
     }
 
