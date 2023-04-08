@@ -57,7 +57,7 @@ const BookDetails = () => {
   };
 
   function showLoadingMessage() {
-    toast.info("Downloading file...", {
+    toast.dark("Downloading file...", {
       position: "top-center",
       autoClose: false,
       hideProgressBar: false,
@@ -156,7 +156,7 @@ const BookDetails = () => {
                   Publisher : <b>{book.publisher}</b>
                 </p>
                 {book.file && (
-                  <button onClick={downloadFileUrl}>
+                  <button onClick={downloadFileUrl} className="--btn --btn-danger">
                     {" "}
                     {isDownloading ? "Downloading..." : "Download File"}
                   </button>

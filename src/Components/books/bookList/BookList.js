@@ -1,33 +1,71 @@
 import styles from "./Booklist.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsFillGridFill } from "react-icons/bs";
 import { FaList } from "react-icons/fa";
 import Search from "../../search/Search";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BookItem from "../bookItem/BookItem";
+import {
+  FILTER_BY_SEARCH,
+  selectFilteredBooks,
+  SORT_BOOKS,
+} from "../../../Redux/features/filterSlice";
+import Pagination from "../../Pagination/Pagination";
 
 const BookList = ({ books }) => {
   const [grid, setGrid] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
 
+  const filteredBooks = useSelector(selectFilteredBooks);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(9);
+  const [booksPerPage] = useState(9);
+  // Get Current Products
+  const indexOfLastBook = currentPage * booksPerPage;
+  const indexOfFirstBook = indexOfLastBook - booksPerPage;
+  const currentBooks = filteredBooks.slice(
+    indexOfFirstBook,
+    indexOfLastBook
+  );
 
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      FILTER_BY_SEARCH({
+        books,
+        search,
+      })
+    );
+  }, [dispatch, books, search]);
+
+  useEffect(() => {
+    dispatch(
+      SORT_BOOKS({
+        books,
+        sort,
+      })
+    );
+  }, [dispatch, books, sort]);
 
   return (
     <div className={styles["book-list"]} id="book">
       <div className={styles.top}>
-        <div className={styles.icons}>
-          <BsFillGridFill size={22} color="orangered" onClick={() => setGrid(true)}/>
-          <FaList size={24} color="#0066d4" onClick={() => setGrid(false)}/>
+        {/* <div className={styles.icons}>
+          <BsFillGridFill
+            size={22}
+            color="orangered"
+            onClick={() => setGrid(true)}
+          />
+          <FaList size={24} color="#0066d4" onClick={() => setGrid(false)} />
 
-          <p>
-            <b>10</b> Books Available
-          </p>
-        </div>
+        </div> */}
+        <p>
+          <b>{filteredBooks.length}</b> Books Available
+        </p>
 
         <div>
           <Search value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -43,22 +81,26 @@ const BookList = ({ books }) => {
         </div>
       </div>
 
-      <div className={grid ? `${styles.grid}` : `${styles.list}`}>
+      <div className={`${styles.grid}`}>
         {books.length === 0 ? (
           <p>No Books Available.</p>
-        ): (
+        ) : (
           <>
-          {
-            books.map((book) => {
-              return(
+            {currentBooks.map((book) => {
+              return (
                 <div key={book.id}>
-                  <BookItem {...book} grid={grid} book={book}/>
+                  <BookItem {...book} grid={grid} book={book} />
                 </div>
-              )
-            })
-          }
+              );
+            })}
           </>
         )}
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          booksPerPage={booksPerPage}
+          totalBooks={filteredBooks.length}
+        />
       </div>
     </div>
   );

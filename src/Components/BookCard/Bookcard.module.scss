@@ -1,9 +1,13 @@
-.card {
+.bookcard {
   border: 1px solid transparent;
   border-radius: 5px;
   box-shadow: var(--box-shadow);
   overflow: hidden;
 }
+
 @media screen and (max-width: 700px) {
-  
+  .bookcard {
+    width: 140px;
+    height: 307px;
+  }
 }

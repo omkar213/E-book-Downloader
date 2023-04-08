@@ -17,6 +17,7 @@ import {
   Reset,
   Admin,
 } from "./Pages/ImportIndex";
+import MyProfile from "./Pages/Profile/MyProfile";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
 
           {/* book details */}
           <Route path="/book-details/:id" element={<BookDetails />} />
+          <Route path="/profile/:id" element={<MyProfile />} />
 
           {/* admin routes */}
 

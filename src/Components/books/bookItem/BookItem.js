@@ -1,7 +1,9 @@
 import React from "react";
 import styles from "./Bookitem.module.scss";
-import Card from "./../../card/Card";
 import { Link } from "react-router-dom";
+import Bookcard from './../../BookCard/Bookcard';
+import { useDispatch } from 'react-redux';
+import { ADD_TO_BOOKMARK } from "../../../Redux/features/bookmarkSlice";
 
 const BookItem = ({
   grid,
@@ -21,8 +23,11 @@ const BookItem = ({
     }
     return text;
   };
+  const dispatch = useDispatch();
+
+  
   return (
-    <Card cardClass={grid ? `${styles.grid}` : `${styles.list}`}>
+    <Bookcard cardClass={`${styles.grid}`}>
       <Link to={`/book-details/${id}`}>
         <div className={styles.img}>
           <img src={imageUrl} alt={name} />
@@ -32,13 +37,14 @@ const BookItem = ({
         <Link to={`/book-details/${id}`}>
           <div className={styles.details}>
             <p>{author}</p>
-            <h4>{shortenText(name, 22)}</h4>
+            <h5>{category}</h5>
+            <h4>{shortenText(name, 12)}</h4>
           </div>
         </Link>
         {!grid && <p className={styles.desc}>{shortenText(desc, 100)}</p>}
         <button className="--btn --btn-danger">Add to BookMark</button>
       </div>
-    </Card>
+    </Bookcard>
   );
 };
 

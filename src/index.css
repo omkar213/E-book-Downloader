@@ -472,6 +472,7 @@ a:hover {
   width: 100%;
   filter: brightness(0.5);
   display: block;
+  height: 360px;
 }
 .banner-container{
   position: relative;
@@ -503,5 +504,31 @@ a:hover {
 }
 
 @media only screen and (max-width: 767px) {
-  /* Your styles here */
+  .--btn {
+    font-size: 1.2rem;
+  }
+  .content-heading{
+    font-size: 2rem;
+  }
+  .content-desc {
+    font-size: 15px;
+  }
+  .banner-slider-folder{
+    height: 230px;
+  }
+  .banner-slider-image img{
+    height: 245px;
+  }
+  .banner-slider-folder .slick-slider .slick-next:before{
+    font-size: 20px;
+  }
+  .banner-slider-folder .slick-slider .slick-prev:before{
+    font-size: 20px;
+  }
+  .banner-slider-folder .slick-slider .slick-prev{
+    left: 3px;
+  }
+  .banner-slider-folder .slick-slider .slick-next {
+    right: 9px;
+  }
 }

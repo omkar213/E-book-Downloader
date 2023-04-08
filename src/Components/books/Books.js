@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Books.module.scss";
 import BookFilter from "./bookFilter/BookFilter";
 import BookList from "./bookList/BookList";
@@ -6,9 +6,11 @@ import useFetchCollection from "./../../CustomHooks/useFetchCollection";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBooks, store_Book } from "../../Redux/features/booksSlice";
 import spinner from "../../Assets/spinner.jpg";
+import { FaCogs } from "react-icons/fa";
 
 const Books = () => {
   const { data, isLoading } = useFetchCollection("books");
+  const [showFilter, setShowFilter] = useState(false);
   const books = useSelector(selectBooks);
   const dispatch = useDispatch();
 
@@ -19,11 +21,19 @@ const Books = () => {
       })
     );
   }, [dispatch, data]);
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
   return (
     <section>
       <div className={`container ${styles.book}`}>
-        <aside className={styles.filter}>
-        {isLoading ? null : <BookFilter />}
+        <aside
+          className={
+            showFilter ? `${styles.filter} ${styles.show}` : `${styles.filter}`
+          }
+        >
+          {isLoading ? null : <BookFilter />}
         </aside>
         <div className={styles.content}>
           {isLoading ? (
@@ -36,6 +46,12 @@ const Books = () => {
           ) : (
             <BookList books={books} />
           )}
+          <div className={styles.icon} onClick={toggleFilter}>
+            <FaCogs size={20} color="orangered" />
+            <p>
+              <b>{showFilter ? "Hide Filter" : "Show Filter"}</b>
+            </p>
+          </div>
         </div>
       </div>
     </section>

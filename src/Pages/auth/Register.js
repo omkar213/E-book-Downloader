@@ -7,6 +7,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import Loader from "../../Components/loader/Loader";
 import { toast } from "react-toastify";
 import { auth } from "../../Firebase/config";
+import { db } from "../../Firebase/config";
+import { addDoc, collection } from "firebase/firestore";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +32,13 @@ const Register = () => {
         console.log(user);
         setIsLoading(false);
         toast.success("Registration successfully 😀");
+        const userDocRef = addDoc(collection(db, "users"), {
+          email: user.email,
+          uid: user.uid,
+        });
+        console.log("New user added with ID: ", userDocRef.id);
         navigate("/login");
+
       })
       .catch((error) => {
         toast.error(error.message);
