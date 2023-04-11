@@ -10,6 +10,7 @@ import spinnerImg from "../../../Assets/spinner.jpg";
 import { getMetadata, getStorage } from "firebase/storage";
 import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
+import DownloadBtn from "../../DownloadBtn/DownloadBtn";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -34,27 +35,27 @@ const BookDetails = () => {
     }
   };
 
-  const showLoadingToast = () => {
-    toast.promise(
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve();
-        }, 2000);
-      }),
-      {
-        pending: "Fetching File From Server..",
-        success: "File Load Successfully!",
-        error: "Error While downloading File",
-      },
-      {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        newestOnTop: false,
-        closeOnClick: true,
-      }
-    );
-  };
+  // const showLoadingToast = () => {
+  //   toast.promise(
+  //     new Promise((resolve, reject) => {
+  //       setTimeout(() => {
+  //         resolve();
+  //       }, 2000);
+  //     }),
+  //     {
+  //       pending: "Fetching File From Server..",
+  //       success: "File Load Successfully!",
+  //       error: "Error While downloading File",
+  //     },
+  //     {
+  //       position: "top-center",
+  //       autoClose: 2000,
+  //       hideProgressBar: false,
+  //       newestOnTop: false,
+  //       closeOnClick: true,
+  //     }
+  //   );
+  // };
 
   function showLoadingMessage() {
     toast.dark("Downloading file...", {
@@ -156,10 +157,14 @@ const BookDetails = () => {
                   Publisher : <b>{book.publisher}</b>
                 </p>
                 {book.file && (
-                  <button onClick={downloadFileUrl} className="--btn --btn-danger">
+                  <div onClick={downloadFileUrl}>
                     {" "}
-                    {isDownloading ? "Downloading..." : "Download File"}
-                  </button>
+                    {isDownloading ? (
+                      <DownloadBtn text={"Downloading"} />
+                    ) : (
+                      <DownloadBtn text={"Download File"} />
+                    )}
+                  </div>
                 )}
               </div>
             </div>

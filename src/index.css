@@ -283,6 +283,7 @@ p {
   justify-content: center;
   align-items: center;
   transition: all 0.3s;
+  font-family: var(--font-family);
 }
 
 .--btn:hover {
@@ -308,7 +309,7 @@ p {
 }
 .--btn-danger {
   color: #fff;
-  background: orangered;
+  background: #fc6e1d;
 }
 
 .--btn-success {
@@ -438,7 +439,7 @@ a:hover {
 .Toastify__toast--success {
   font-size: 1.3rem;
 }
-.Toastify__toast-body{
+.Toastify__toast-body {
   font-size: 1.3rem;
 }
 
@@ -474,7 +475,7 @@ a:hover {
   display: block;
   height: 360px;
 }
-.banner-container{
+.banner-container {
   position: relative;
 }
 .content {
@@ -498,34 +499,73 @@ a:hover {
   color: white;
   font-size: 2rem;
 }
+.viewBtn {
+  display: inline-block;
+  border-radius: 7px;
+  border: none;
+  background: #fc6e1d;
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  font-family: var(--font-family);
+  box-shadow: 0px 14px 56px -11px #fc6e1d;
+  width: 100%;
+  padding: 5px;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.viewBtn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.4s;
+}
+
+.viewBtn span:after {
+  content: " for free";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.7s;
+}
+
+.viewBtn:hover span {
+  padding-right: 3.55em;
+}
+
+.viewBtn:hover span:after {
+  opacity: 4;
+  right: 0;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-  
 }
 
 @media only screen and (max-width: 767px) {
   .--btn {
     font-size: 1.2rem;
   }
-  .content-heading{
+  .content-heading {
     font-size: 2rem;
   }
   .content-desc {
     font-size: 15px;
   }
-  .banner-slider-folder{
+  .banner-slider-folder {
     height: 230px;
   }
-  .banner-slider-image img{
+  .banner-slider-image img {
     height: 245px;
   }
-  .banner-slider-folder .slick-slider .slick-next:before{
+  .banner-slider-folder .slick-slider .slick-next:before {
     font-size: 20px;
   }
-  .banner-slider-folder .slick-slider .slick-prev:before{
+  .banner-slider-folder .slick-slider .slick-prev:before {
     font-size: 20px;
   }
-  .banner-slider-folder .slick-slider .slick-prev{
+  .banner-slider-folder .slick-slider .slick-prev {
     left: 3px;
   }
   .banner-slider-folder .slick-slider .slick-next {

@@ -3,12 +3,13 @@ import styles from "./auth.module.scss";
 import registerImg from "../../Assets/register.png";
 import Card from "../../Components/card/Card";
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Loader from "../../Components/loader/Loader";
 import { toast } from "react-toastify";
 import { auth } from "../../Firebase/config";
 import { db } from "../../Firebase/config";
 import { addDoc, collection } from "firebase/firestore";
+import { FaGoogle } from "react-icons/fa";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -46,6 +47,26 @@ const Register = () => {
       });
   };
 
+  const provider = new GoogleAuthProvider();
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const userDocRef = addDoc(collection(db, "users"), {
+          email: user.email,
+          uid: user.uid,
+        });
+        console.log("New user added with ID: ", userDocRef.id);
+        setIsLoading(false);
+        toast.success("Login Successfully");
+        navigate("/")
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setIsLoading(false);
+      });
+  };
+
   return (
     <>
       {isLoading && <Loader/>}
@@ -80,7 +101,10 @@ const Register = () => {
                 Register
               </button>
             </form>
-
+            <br/>
+            <button className="--btn --btn-danger --btn-block" onClick={signInWithGoogle}>
+              <FaGoogle color="#fff" /> Login With Google
+            </button>
             <span className={styles.register}>
               <p>Already an account?</p>
               <Link to="/login">Login</Link>

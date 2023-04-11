@@ -15,7 +15,7 @@ const BookFilter = () => {
   const allCategories = ["All", ...new Set(books.map((book) => book.category))];
 
   const allAuthors = ["All", ...new Set(books.map((book) => book.author))];
-  console.log(allAuthors);
+  // console.log(allAuthors);
 
   useEffect(() => {
     dispatch(FILTER_BY_AUTHOR({ books, author}))
