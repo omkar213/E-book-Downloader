@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./Bookitem.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Bookcard from "./../../BookCard/Bookcard";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../../Redux/features/authSlice";
+import { toast } from "react-toastify";
 
 const BookItem = ({
   grid,
@@ -22,28 +25,50 @@ const BookItem = ({
     return text;
   };
 
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      navigate(`/book-details/${id}`);
+    } else {
+      navigate("/register");
+      toast.warn('Create An Account to Download the Free E-Book', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+    }
+  };
+
   return (
     <Bookcard cardClass={`${styles.grid}`}>
-      <Link to={`/book-details/${id}`}>
-        <div className={styles.img}>
-          <img src={imageUrl} alt={name} />
-        </div>
-      </Link>
+      <div className={styles.img}>
+        <img src={imageUrl} alt={name} />
+      </div>
+
       <div className={styles.content}>
-        <Link to={`/book-details/${id}`}>
-          <div className={styles.details}>
-            <p>{author}</p>
-            <h5>{category}</h5>
-            <h4>{shortenText(name, 12)}</h4>
-          </div>
-        </Link>
+        <div className={styles.details}>
+          <p>{author}</p>
+          <h5>{category}</h5>
+          <h4>{shortenText(name, 12)}</h4>
+        </div>
+
         {!grid && <p className={styles.desc}>{shortenText(desc, 100)}</p>}
         {/* <button className="--btn --btn-danger">View</button> */}
-        <Link to={`/book-details/${id}`}>
-          <button className="viewBtn" style={{ verticalAlign: "middle" }}>
-            <span>Download</span>
-          </button>
-        </Link>
+
+        <button
+          className="viewBtn"
+          style={{ verticalAlign: "middle" }}
+          onClick={handleButtonClick}
+        >
+          <span>Download</span>
+        </button>
       </div>
     </Bookcard>
   );

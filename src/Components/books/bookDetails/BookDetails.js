@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Bookdetails.module.scss";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "./../../../Firebase/config";
 import { doc } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
@@ -11,12 +11,17 @@ import { getMetadata, getStorage } from "firebase/storage";
 import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
 import DownloadBtn from "../../DownloadBtn/DownloadBtn";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../../Redux/features/authSlice";
 
 const BookDetails = () => {
   const { id } = useParams();
 
   const [book, setBook] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const userLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
 
   const FirebaseStorage = getStorage(app);
 

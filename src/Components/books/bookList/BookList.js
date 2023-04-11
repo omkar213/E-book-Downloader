@@ -11,11 +11,13 @@ import {
   SORT_BOOKS,
 } from "../../../Redux/features/filterSlice";
 import Pagination from "../../Pagination/Pagination";
+import EmailNewsletter from "../../EmailNewsletter/EmailNewsletter";
 
 const BookList = ({ books }) => {
   const [grid, setGrid] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
+  const [showNewsletter, setShowNewsletter] = useState(false);
 
   const filteredBooks = useSelector(selectFilteredBooks);
 
@@ -25,11 +27,7 @@ const BookList = ({ books }) => {
   // Get Current Products
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = filteredBooks.slice(
-    indexOfFirstBook,
-    indexOfLastBook
-  );
-
+  const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
   const dispatch = useDispatch();
 
@@ -40,7 +38,12 @@ const BookList = ({ books }) => {
         search,
       })
     );
-  }, [dispatch, books, search]);
+    if (filteredBooks.length === 0) {
+      setShowNewsletter(true);
+    } else {
+      setShowNewsletter(false);
+    }
+  }, [dispatch, books, search, filteredBooks.length]);
 
   useEffect(() => {
     dispatch(
@@ -82,8 +85,8 @@ const BookList = ({ books }) => {
       </div>
 
       <div className={`${styles.grid}`}>
-        {books.length === 0 ? (
-          <p>No Books Available.</p>
+        {filteredBooks.length === 0 && showNewsletter ? (
+          <EmailNewsletter />
         ) : (
           <>
             {currentBooks.map((book) => {
@@ -95,13 +98,13 @@ const BookList = ({ books }) => {
             })}
           </>
         )}
-        <Pagination
+      </div>
+      <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           booksPerPage={booksPerPage}
           totalBooks={filteredBooks.length}
         />
-      </div>
     </div>
   );
 };
