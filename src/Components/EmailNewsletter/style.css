@@ -1,0 +1,69 @@
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem;
+}
+.newslettercard {
+  width: 270px;
+  height: 254px;
+  padding: 0 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: #d7d4d4;
+  border-radius: 20px;
+}
+
+.newslettercard > * {
+  margin: 0;
+}
+
+.newslettercard__title {
+  font-size: 23px;
+  font-weight: 900;
+  color: #333;
+}
+
+.newslettercard__content {
+  font-size: 13px;
+  line-height: 18px;
+  color: #333;
+}
+
+.newslettercard__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.newslettercard__form input {
+  margin-top: 10px;
+  outline: 0;
+  background: rgb(255, 255, 255);
+  box-shadow: transparent 0px 0px 0px 1px inset;
+  padding: 0.6em;
+  border-radius: 14px;
+  border: 1px solid #333;
+  color: black;
+  width: 230px
+}
+
+.newslettercard__form button {
+  border: 0;
+  background: #111;
+  color: #fff;
+  padding: 0.68em;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+.sign-up:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}

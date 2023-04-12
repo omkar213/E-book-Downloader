@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Bookdetails.module.scss";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "./../../../Firebase/config";
 import { doc } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
@@ -10,12 +10,18 @@ import spinnerImg from "../../../Assets/spinner.jpg";
 import { getMetadata, getStorage } from "firebase/storage";
 import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
+import DownloadBtn from "../../DownloadBtn/DownloadBtn";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../../Redux/features/authSlice";
 
 const BookDetails = () => {
   const { id } = useParams();
 
   const [book, setBook] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const userLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
 
   const FirebaseStorage = getStorage(app);
 
@@ -34,30 +40,30 @@ const BookDetails = () => {
     }
   };
 
-  const showLoadingToast = () => {
-    toast.promise(
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve();
-        }, 2000);
-      }),
-      {
-        pending: "Fetching File From Server..",
-        success: "File Load Successfully!",
-        error: "Error While downloading File",
-      },
-      {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        newestOnTop: false,
-        closeOnClick: true,
-      }
-    );
-  };
+  // const showLoadingToast = () => {
+  //   toast.promise(
+  //     new Promise((resolve, reject) => {
+  //       setTimeout(() => {
+  //         resolve();
+  //       }, 2000);
+  //     }),
+  //     {
+  //       pending: "Fetching File From Server..",
+  //       success: "File Load Successfully!",
+  //       error: "Error While downloading File",
+  //     },
+  //     {
+  //       position: "top-center",
+  //       autoClose: 2000,
+  //       hideProgressBar: false,
+  //       newestOnTop: false,
+  //       closeOnClick: true,
+  //     }
+  //   );
+  // };
 
   function showLoadingMessage() {
-    toast.info("Downloading file...", {
+    toast.dark("Downloading file...", {
       position: "top-center",
       autoClose: false,
       hideProgressBar: false,
@@ -156,10 +162,14 @@ const BookDetails = () => {
                   Publisher : <b>{book.publisher}</b>
                 </p>
                 {book.file && (
-                  <button onClick={downloadFileUrl}>
+                  <div onClick={downloadFileUrl}>
                     {" "}
-                    {isDownloading ? "Downloading..." : "Download File"}
-                  </button>
+                    {isDownloading ? (
+                      <DownloadBtn text={"Downloading"} />
+                    ) : (
+                      <DownloadBtn text={"Download File"} />
+                    )}
+                  </div>
                 )}
               </div>
             </div>
