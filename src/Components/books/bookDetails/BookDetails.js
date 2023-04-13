@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Bookdetails.module.scss";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "./../../../Firebase/config";
-import { doc } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +12,7 @@ import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
 import DownloadBtn from "../../DownloadBtn/DownloadBtn";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../../Redux/features/authSlice";
+import { selectEmail, selectIsLoggedIn, selectUserID, selectUserName } from "../../../Redux/features/authSlice";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -20,7 +20,9 @@ const BookDetails = () => {
   const [book, setBook] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const userLoggedIn = useSelector(selectIsLoggedIn);
+  const userName = useSelector(selectUserName);
+  const userEmail = useSelector(selectEmail);
+  const userId = useSelector(selectUserID);
   const navigate = useNavigate();
 
   const FirebaseStorage = getStorage(app);
@@ -86,6 +88,25 @@ const BookDetails = () => {
     toast.dismiss();
   }
 
+  const saveDownloadDetails = () => {
+    const today = new Date();
+    const date = today.toDateString();
+    const time = today.toLocaleTimeString();
+    const dataConfig = {
+      userId,
+      userEmail,
+      userName,
+      name: book.name,
+      createdAt: Timestamp.now().toDate(),
+    };
+    try {
+      const docRef = addDoc(collection(db, "Downloads"), dataConfig);
+      console.log(docRef);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
   const downloadFileUrl = () => {
     const parts = `${book.file}.pdf`.split("/");
     const fileName = parts[parts.length - 1].split("?")[0];
@@ -116,6 +137,7 @@ const BookDetails = () => {
                   link.click();
                   setIsDownloading(false);
                   hideLoadingToast();
+                  saveDownloadDetails();
                 })
                 .catch((error) => console.error(error));
             })

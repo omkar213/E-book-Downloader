@@ -38,12 +38,15 @@ const BookList = ({ books }) => {
         search,
       })
     );
-    if (filteredBooks.length === 0) {
+  }, [dispatch, books, search]);
+
+  useEffect(() => {
+    if (filteredBooks.length === 0 && search !== "") {
       setShowNewsletter(true);
     } else {
       setShowNewsletter(false);
     }
-  }, [dispatch, books, search, filteredBooks.length]);
+  }, [filteredBooks, search]);
 
   useEffect(() => {
     dispatch(
@@ -85,8 +88,8 @@ const BookList = ({ books }) => {
       </div>
 
       <div className={`${styles.grid}`}>
-        {filteredBooks.length === 0 && showNewsletter ? (
-          <EmailNewsletter />
+      {filteredBooks.lenght === 0  || showNewsletter ?(
+          <EmailNewsletter/>
         ) : (
           <>
             {currentBooks.map((book) => {

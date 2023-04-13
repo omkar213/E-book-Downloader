@@ -33,7 +33,7 @@ const Books = () => {
             showFilter ? `${styles.filter} ${styles.show}` : `${styles.filter}`
           }
         >
-          {isLoading ? null : <BookFilter />}
+          {isLoading ? null : <BookFilter toggleFilter={toggleFilter} />}
         </aside>
         <div className={styles.content}>
           {isLoading ? (

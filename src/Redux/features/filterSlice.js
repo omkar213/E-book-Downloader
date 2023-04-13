@@ -16,6 +16,7 @@ const filterSlice = createSlice({
           book.category.toLowerCase().includes(search.toLowerCase()) ||
           book.author.toLowerCase().includes(search.toLowerCase()));
       state.filteredBooks = tempBooks;
+      console.log(tempBooks);
     },
     SORT_BOOKS(state, action){
         const { books, sort } = action.payload

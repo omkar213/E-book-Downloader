@@ -7,7 +7,7 @@ import image5 from "../../Assets/image5.jpg";
 export const sliderData = [
   {
     image: image1,
-    heading: "The Ultimate Website to Free eBooks",
+    heading: "Create An Account To Download The Ebooks For Free!!",
     desc: "Welcome to your friendly neighborhood library. We have more than 50,000 free ebooks waiting to be discovered.",
   },
   {
