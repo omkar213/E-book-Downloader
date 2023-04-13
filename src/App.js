@@ -18,6 +18,7 @@ import {
   Admin,
 } from "./Pages/ImportIndex";
 import MyProfile from "./Components/Profile/MyProfile";
+import NotFound from "./Pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -48,6 +49,8 @@ function App() {
               </AdminOnlyRoute>
             }
           />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -6,7 +6,7 @@ import { selectBooks } from "../../../Redux/features/booksSlice";
 import { useState } from "react";
 import { FILTER_BY_AUTHOR, FILTER_BY_CATEGORY } from "../../../Redux/features/filterSlice";
 
-const BookFilter = () => {
+const BookFilter = ({ toggleFilter }) => {
   const [category, setCategory] = useState("All");
   const [author, setAuthor] = useState("A");
   const books = useSelector(selectBooks);
@@ -23,12 +23,15 @@ const BookFilter = () => {
 
   const filterBooks = (cat) => {
     setCategory(cat);
+    console.log()
     dispatch(FILTER_BY_CATEGORY({ books, category: cat }));
+    toggleFilter();
   };
 
   const clearFilters = () => {
     setAuthor('All');
     setCategory('All')
+    toggleFilter();
   }
   return (
     <div className={styles.filter}>

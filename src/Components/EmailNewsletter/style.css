@@ -16,7 +16,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 12px;
-  background: #d7d4d4;
+  background: #edebeb;
   border-radius: 20px;
 }
 
@@ -56,7 +56,7 @@
 
 .newslettercard__form button {
   border: 0;
-  background: #111;
+  background: #fc6e1d;
   color: #fff;
   padding: 0.68em;
   border-radius: 14px;

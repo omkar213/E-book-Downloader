@@ -38,7 +38,7 @@ const Register = () => {
           uid: user.uid,
         });
         // console.log("New user added with ID: ", userDocRef.id);
-        navigate("/login");
+        navigate("/");
 
       })
       .catch((error) => {
