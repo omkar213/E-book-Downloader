@@ -19,7 +19,7 @@ const logo = (
   <div className={styles.logo}>
     <Link to="/">
       <h2>
-        e<span>BoOk</span>.com
+        e<span>BoOk</span>
       </h2>
     </Link>
   </div>

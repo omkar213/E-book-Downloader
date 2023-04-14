@@ -28,23 +28,23 @@ const BookItem = ({
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
 
-  // const handleButtonClick = () => {
-  //   if (isLoggedIn) {
-  //     navigate(`/book-details/${id}`);
-  //   } else {
-  //     navigate("/register");
-  //     toast.warn('Create An Account to Download the Free E-Book', {
-  //       position: "top-center",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "dark",
-  //       });
-  //   }
-  // };
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      navigate(`/book-details/${id}`);
+    } else {
+      navigate("/register");
+      toast.warn('Create An Account to Download the Free E-Book', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+    }
+  };
 
   return (
     <Bookcard cardClass={`${styles.grid}`}>
@@ -65,7 +65,7 @@ const BookItem = ({
         <button
           className="viewBtn"
           style={{ verticalAlign: "middle" }}
-          // onClick={handleButtonClick}
+          onClick={handleButtonClick}
         >
           <span>Download</span>
         </button>

@@ -6,6 +6,7 @@ import {
   selectUserID,
   selectUserName,
 } from "../../Redux/features/authSlice";
+import './MyProfile.css'
 
 
 
@@ -16,14 +17,16 @@ const MyProfile = () => {
   const userName = useSelector(selectUserName);
 
   return (
-    <>
-      <div>
-        <h1>{uid}</h1>
-        <img src={userImg} alt="" style={{ width: "200px", height: "200px" }} />
-        <h2>{userName}</h2>
-        <h2>{email}</h2>
+    <div className="container">
+      <div className="profile-wrapper">
+        <img className="profile" src={userImg} alt="" style={{ width: "200px", height: "200px" }} />
+        <h2 className="profile-name">Username: {userName}</h2>
+        <h2 className="profile-email">Email: {email}</h2>
       </div>
-    </>
+      <div className="sidebar">
+
+      </div>
+    </div>
   );
 };
 

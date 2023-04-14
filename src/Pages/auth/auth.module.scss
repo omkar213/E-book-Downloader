@@ -29,13 +29,21 @@
         border: 1px solid #777;
         border-radius: 3px;
         outline: none;
+
+        &.valid {
+          border: 2px solid green;
+        }
+
+        &.invalid {
+          border: 2px solid red;
+        }
       }
+
       .links {
         display: flex;
         justify-content: space-between;
         margin: 5px 0;
       }
-
       p {
         text-align: center;
         margin: 1rem;
@@ -71,4 +79,9 @@
   .img {
     display: none;
   }
+  .auth {
+  .form{
+    width: 30rem;
+  }
+}
 }
