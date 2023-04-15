@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserID } from "../../Redux/features/authSlice";
 import {
@@ -7,15 +7,47 @@ import {
 } from "../../Redux/features/downlodsSlice";
 import styles from "./Downloadhistory.module.scss";
 import Loader from "./../../Components/loader/Loader";
-import useFetchCollection from '../../customHooks/useFetchCollection';
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../../Firebase/config";
+import { toast } from "react-toastify";
 
 const DownloadHistory = () => {
-  const { data, isLoading } = useFetchCollection("downloads");
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const downloads = useSelector(selectDownloadHistory);
   const userId = useSelector(selectUserID);
   const dispatch = useDispatch();
+
   console.log(downloads);
-  console.log(data);
+
+  const getCollection = () => {
+    setIsLoading(true);
+
+    try {
+      const docRef = collection(db, "downloads");
+
+      const q = query(docRef, orderBy("createAt", "desc"));
+
+      onSnapshot(q, (snapshot) => {
+        // console.log(snapshot.docs);
+        const allData = snapshot.docs.map((doc, index) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setIsLoading(false);
+        // console.log(allData);
+        setData(allData);
+      });
+    } catch (error) {
+      setIsLoading(false);
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCollection();
+  }, []);
 
   useEffect(() => {
     dispatch(STORE_DOWNLOADS(data));
@@ -24,7 +56,7 @@ const DownloadHistory = () => {
   const filteredBooks = downloads.filter(
     (download) => download.userId === userId
   );
-  console.log(filteredBooks);
+  console.log(data);
 
   return (
     <section>
