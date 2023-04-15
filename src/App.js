@@ -19,6 +19,7 @@ import {
 } from "./Pages/ImportIndex";
 import MyProfile from "./Components/Profile/MyProfile";
 import NotFound from "./Pages/NotFound/NotFound";
+import ReviewBooks from "./Components/ReviewBooks/ReviewBooks";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
 
           {/* book details */}
           <Route path="/book-details/:id" element={<BookDetails />} />
+          <Route path="/review-book/:id" element={<ReviewBooks />} />
           <Route path="/profile" element={<MyProfile />} />
 
           {/* admin routes */}

@@ -2,12 +2,13 @@ import { configureStore, combineReducers, getDefaultMiddleware } from "@reduxjs/
 import authReducer from "./features/authSlice";
 import bookReducer from "./features/booksSlice";
 import fliterReducer from "./features/filterSlice";
-import bookmarkReducer from "./features/bookmarkSlice";
+import downloadReducer from "./features/downlodsSlice";
 
 const rootReducer = combineReducers({
     auth: authReducer,
     book: bookReducer,
     filter: fliterReducer,
+    downloads: downloadReducer
 })
 
 const store = configureStore({

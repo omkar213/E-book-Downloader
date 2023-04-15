@@ -17,7 +17,8 @@ import { deleteObject, ref } from "firebase/storage";
 import Loader from "./../../loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBooks, store_Book } from "../../../Redux/features/booksSlice";
-import useFetchCollection from "./../../../CustomHooks/useFetchCollection";
+import useFetchCollection from "../../../customHooks/useFetchCollection";
+
 
 
 const ViewBooks = () => {

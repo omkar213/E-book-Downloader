@@ -514,14 +514,12 @@ a:hover {
   transition: all 0.4s;
   cursor: pointer;
 }
-
 .viewBtn span {
   cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.4s;
 }
-
 .viewBtn span:after {
   content: " for free";
   position: absolute;
@@ -530,21 +528,23 @@ a:hover {
   right: -20px;
   transition: 0.7s;
 }
-
 .viewBtn:hover span {
   padding-right: 3.55em;
 }
-
 .viewBtn:hover span:after {
   opacity: 4;
   right: 0;
 }
-
 .contact-container {
   max-width: 1250px;
   margin: 0px 10px 10px 100px;
   padding: 0 20px;
 }
+.downloadBtn {
+  width: 160px!important;
+}
+
+
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
 }
