@@ -12,7 +12,12 @@ import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
 import DownloadBtn from "../../DownloadBtn/DownloadBtn";
 import { useSelector } from "react-redux";
-import { selectEmail, selectIsLoggedIn, selectUserID, selectUserName } from "../../../Redux/features/authSlice";
+import {
+  selectEmail,
+  selectIsLoggedIn,
+  selectUserID,
+  selectUserName,
+} from "../../../Redux/features/authSlice";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -88,7 +93,7 @@ const BookDetails = () => {
     toast.dismiss();
   }
 
-  const saveDownloadDetails = () => {
+  const saveDownloadDetails = async () => {
     const today = new Date();
     const date = today.toDateString();
     const time = today.toLocaleTimeString();
@@ -97,15 +102,19 @@ const BookDetails = () => {
       userEmail,
       userName,
       name: book.name,
-      createdAt: Timestamp.now().toDate(),
+      downloadDate: date,
+      downloadTime: time,
+      createAt: Timestamp.now().toDate(),
     };
     try {
-      const docRef = addDoc(collection(db, "Downloads"), dataConfig);
+      const docRef = await addDoc(collection(db, "downloads"), dataConfig);
+      console.log("Document written with ID: ", docRef.id);
       console.log(docRef);
     } catch (error) {
-      toast.error(error.message);
+      console.log(error.message);
     }
-  }
+  };
+  
 
   const downloadFileUrl = () => {
     const parts = `${book.file}.pdf`.split("/");

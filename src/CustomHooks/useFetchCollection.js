@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../Firebase/config";
 import { toast } from "react-toastify";
 
-
 const useFetchCollection = (collectionName) => {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getCollection = () => {
     setIsLoading(true);
@@ -33,8 +32,8 @@ const useFetchCollection = (collectionName) => {
   };
 
   useEffect(() => {
-    getCollection()
-  }, [])
+    getCollection();
+  }, []);
 
   return { data, isLoading };
 };

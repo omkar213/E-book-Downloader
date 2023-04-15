@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import styles from "./Books.module.scss";
 import BookFilter from "./bookFilter/BookFilter";
 import BookList from "./bookList/BookList";
-import useFetchCollection from "./../../CustomHooks/useFetchCollection";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBooks, store_Book } from "../../Redux/features/booksSlice";
 import spinner from "../../Assets/spinner.jpg";
 import { FaCogs } from "react-icons/fa";
+import useFetchCollection from '../../customHooks/useFetchCollection';
 
 const Books = () => {
-  const { data, isLoading } = useFetchCollection("books");
+  const {data, isLoading} = useFetchCollection("books");
   const [showFilter, setShowFilter] = useState(false);
   const books = useSelector(selectBooks);
   const dispatch = useDispatch();
