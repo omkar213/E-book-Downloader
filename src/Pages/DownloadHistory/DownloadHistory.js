@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import useFetchCollection from "../../customHooks/useFetchCollection";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserID } from "../../Redux/features/authSlice";
-import { STORE_DOWNLOADS, selectDownloadHistory } from "../../Redux/features/downlodsSlice";
-import styles from './Downloadhistory.module.scss';
-import Loader from './../../Components/loader/Loader';
-
+import {
+  STORE_DOWNLOADS,
+  selectDownloadHistory,
+} from "../../Redux/features/downlodsSlice";
+import styles from "./Downloadhistory.module.scss";
+import Loader from "./../../Components/loader/Loader";
+import useFetchCollection from '../../customHooks/useFetchCollection';
 
 const DownloadHistory = () => {
   const { data, isLoading } = useFetchCollection("downloads");
@@ -19,7 +21,9 @@ const DownloadHistory = () => {
     dispatch(STORE_DOWNLOADS(data));
   }, [dispatch, data]);
 
-  const filteredBooks = downloads.filter((download) => download.userId === userId);
+  const filteredBooks = downloads.filter(
+    (download) => download.userId === userId
+  );
   console.log(filteredBooks);
 
   return (
@@ -43,11 +47,7 @@ const DownloadHistory = () => {
                 </thead>
                 <tbody>
                   {filteredBooks.map((order, index) => {
-                    const {
-                      id,
-                      downloadDate,
-                      name
-                    } = order;
+                    const { id, downloadDate, name } = order;
                     return (
                       <tr key={id}>
                         <td>{index + 1}</td>
