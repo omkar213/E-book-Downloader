@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { db } from "../../Firebase/config";
 import "./style.css";
 import { toast } from "react-toastify";
-import { addDoc, collection } from "firebase/firestore";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
@@ -16,6 +16,7 @@ const EmailNewsletter = () => {
       const docRef = addDoc(collection(db, "newsletterSubcribers"), {
         email: userEmail,
         name: bookName,
+        createAt: Timestamp.now().toDate()
       });
       console.log(docRef);
       toast.success("Than you for subscribing😊");

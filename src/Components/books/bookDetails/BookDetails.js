@@ -11,13 +11,14 @@ import { getMetadata, getStorage } from "firebase/storage";
 import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
 import DownloadBtn from "../../DownloadBtn/DownloadBtn";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectEmail,
   selectIsLoggedIn,
   selectUserID,
   selectUserName,
 } from "../../../Redux/features/authSlice";
+import { STORE_DOWNLOADS } from "../../../Redux/features/downlodsSlice";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -29,6 +30,8 @@ const BookDetails = () => {
   const userEmail = useSelector(selectEmail);
   const userId = useSelector(selectUserID);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const FirebaseStorage = getStorage(app);
 

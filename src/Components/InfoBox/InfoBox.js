@@ -1,8 +1,9 @@
 import React from "react";
 import Card from "./../card/Card";
 import styles from './Infobox.module.scss'
+import { Link } from 'react-router-dom';
 
-const InfoBox = ({ cardClass, title, count, icon }) => {
+const InfoBox = ({ cardClass, title, count, icon, Link }) => {
   return (
     <div className={styles["info-box"]}>
       <Card cardClass={cardClass}>

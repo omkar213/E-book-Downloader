@@ -12,6 +12,7 @@ const Books = () => {
   const {data, isLoading} = useFetchCollection("books");
   const [showFilter, setShowFilter] = useState(false);
   const books = useSelector(selectBooks);
+  console.log(books)
   const dispatch = useDispatch();
 
   useEffect(() => {
