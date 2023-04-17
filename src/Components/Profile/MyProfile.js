@@ -8,8 +8,7 @@ import {
 } from "../../Redux/features/authSlice";
 import "./MyProfile.css";
 import DownloadHistory from "../../Pages/DownloadHistory/DownloadHistory";
-
-
+import { Link } from "react-router-dom";
 
 const MyProfile = () => {
   // const [userData, setUserData] = useState(null);
@@ -26,8 +25,11 @@ const MyProfile = () => {
         />
         <h2 className="profile-name">Username: {userName}</h2>
         <h2 className="profile-email">Email: {email}</h2>
+        <Link to="/reset">
+          <button className="--btn --btn-primary">Rest Password</button>
+        </Link>
       </div>
-      <DownloadHistory/>
+      <DownloadHistory />
     </div>
   );
 };

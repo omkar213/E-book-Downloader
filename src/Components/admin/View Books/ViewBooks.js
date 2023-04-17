@@ -3,12 +3,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Notiflix from "notiflix";
 import {
-  collection,
   deleteDoc,
   doc,
-  onSnapshot,
-  orderBy,
-  query,
 } from "firebase/firestore";
 import { db, storage } from "../../../Firebase/config";
 import { Link } from "react-router-dom";
@@ -17,16 +13,37 @@ import { deleteObject, ref } from "firebase/storage";
 import Loader from "./../../loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBooks, store_Book } from "../../../Redux/features/booksSlice";
-import useFetchCollection from "../../../customHooks/useFetchCollection";
+import useFetchCollection from "../../../hooks/useFetchCollection";
+import { FILTER_BY_SEARCH, selectFilteredBooks } from "../../../Redux/features/filterSlice";
+import Search from "../../search/Search";
+import Pagination from "../../Pagination/Pagination";
 
 
 
 const ViewBooks = () => {
   const { data, isLoading } = useFetchCollection("books");
+  const filteredBooks = useSelector(selectFilteredBooks);
 
   const books = useSelector(selectBooks)
-
   const dispatch = useDispatch();
+
+  const [search, setSearch] = useState("");
+ // Pagination states
+ const [currentPage, setCurrentPage] = useState(1);
+ const [booksPerPage] = useState(9);
+ // Get Current Products
+ const indexOfLastBook = currentPage * booksPerPage;
+ const indexOfFirstBook = indexOfLastBook - booksPerPage;
+ const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
+
+  useEffect(() => {
+    dispatch(
+      FILTER_BY_SEARCH({
+        books,
+        search,
+      })
+    );
+  }, [dispatch, books, search]);
 
   useEffect(() => {
     dispatch(
@@ -77,7 +94,13 @@ const ViewBooks = () => {
       {isLoading && <Loader />}
       <div className={styles.table}>
         <h2>All Books</h2>
-        {books.length === 0 ? (
+        <div className={styles.search}>
+          <p>
+            <b>{filteredBooks.length}</b> Books Found.
+          </p>
+          <Search value={search} onChange={(e) => setSearch(e.target.value)} />
+        </div>
+        {filteredBooks.length === 0 ? (
           <p>No Books Found</p>
         ) : (
           <table>
@@ -94,7 +117,7 @@ const ViewBooks = () => {
               </tr>
             </thead>
             <tbody>
-              {books.map((book, index) => {
+              {currentBooks.map((book, index) => {
                 const {
                   author,
                   id,
@@ -138,6 +161,12 @@ const ViewBooks = () => {
             </tbody>
           </table>
         )}
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          booksPerPage={booksPerPage}
+          totalBooks={filteredBooks.length}
+        />
       </div>
     </>
   );

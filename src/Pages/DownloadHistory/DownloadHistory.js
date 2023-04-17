@@ -10,11 +10,13 @@ import Loader from "./../../Components/loader/Loader";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../Firebase/config";
 import { toast } from "react-toastify";
+import { Link, useParams } from "react-router-dom";
+import UseFetchDoc from "../../reusableCode/UseFetchDoc";
+
 
 const DownloadHistory = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const downloads = useSelector(selectDownloadHistory);
   const userId = useSelector(selectUserID);
   const dispatch = useDispatch();
@@ -85,6 +87,13 @@ const DownloadHistory = () => {
                         <td>{index + 1}</td>
                         <td>{downloadDate}</td>
                         <td>{name}</td>
+                        <td className={styles.icons}>
+                        <Link to={`/review-book/${id}`}>
+                          <button className="--btn --btn-primary">
+                            Review Books
+                          </button>
+                        </Link>
+                      </td>
                       </tr>
                     );
                   })}

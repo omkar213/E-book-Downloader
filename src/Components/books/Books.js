@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectBooks, store_Book } from "../../Redux/features/booksSlice";
 import spinner from "../../Assets/spinner.jpg";
 import { FaCogs } from "react-icons/fa";
-import useFetchCollection from '../../customHooks/useFetchCollection';
+import useFetchCollection from '../../hooks/useFetchCollection';
 
 const Books = () => {
   const {data, isLoading} = useFetchCollection("books");
