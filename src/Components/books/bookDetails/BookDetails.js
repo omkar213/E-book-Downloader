@@ -11,14 +11,15 @@ import { getMetadata, getStorage } from "firebase/storage";
 import { FirebaseStorage, getDownloadURL, ref } from "firebase/storage";
 import app from "./../../../Firebase/config";
 import DownloadBtn from "../../DownloadBtn/DownloadBtn";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   selectEmail,
-  selectIsLoggedIn,
   selectUserID,
   selectUserName,
 } from "../../../Redux/features/authSlice";
-import { STORE_DOWNLOADS } from "../../../Redux/features/downlodsSlice";
+import Card from "../../card/Card";
+import StarsRating from "react-star-rate";
+import useFetchCollection from "./../../../hooks/useFetchCollection";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -29,9 +30,11 @@ const BookDetails = () => {
   const userName = useSelector(selectUserName);
   const userEmail = useSelector(selectEmail);
   const userId = useSelector(selectUserID);
-  const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  const { data } = useFetchCollection("reviews");
+  console.log(data);
+  const filteredReviews = data.filter((review) => review.bookId === id);
+  console.log(filteredReviews);
 
   const FirebaseStorage = getStorage(app);
 
@@ -49,28 +52,6 @@ const BookDetails = () => {
       toast.error("BOOK NOT FOUND 😖");
     }
   };
-
-  // const showLoadingToast = () => {
-  //   toast.promise(
-  //     new Promise((resolve, reject) => {
-  //       setTimeout(() => {
-  //         resolve();
-  //       }, 2000);
-  //     }),
-  //     {
-  //       pending: "Fetching File From Server..",
-  //       success: "File Load Successfully!",
-  //       error: "Error While downloading File",
-  //     },
-  //     {
-  //       position: "top-center",
-  //       autoClose: 2000,
-  //       hideProgressBar: false,
-  //       newestOnTop: false,
-  //       closeOnClick: true,
-  //     }
-  //   );
-  // };
 
   function showLoadingMessage() {
     toast.dark("Downloading file...", {
@@ -105,6 +86,7 @@ const BookDetails = () => {
       userEmail,
       userName,
       name: book.name,
+      id: id,
       downloadDate: date,
       downloadTime: time,
       createAt: Timestamp.now().toDate(),
@@ -117,7 +99,6 @@ const BookDetails = () => {
       console.log(error.message);
     }
   };
-  
 
   const downloadFileUrl = () => {
     const parts = `${book.file}.pdf`.split("/");
@@ -210,6 +191,33 @@ const BookDetails = () => {
           </>
         )}
       </div>
+      <Card>
+        <h3>Book Reviews</h3>
+        <div>
+          {filteredReviews.length === 0 ? (
+            <p>There are no reviews for this product yet.</p>
+          ) : (
+            <>
+              {filteredReviews.map((item, index) => {
+                const { rate, review, reviewDate, userName } = item;
+                return (
+                  <div key={index} className={styles.review}>
+                    <StarsRating value={rate} />
+                    <p>{review}</p>
+                    <span>
+                      <b>{reviewDate}</b>
+                    </span>
+                    <br />
+                    <span>
+                      <b>by: {userName}</b>
+                    </span>
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </div>
+      </Card>
       <ToastContainer />
     </section>
   );

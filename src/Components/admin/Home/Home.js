@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./Home.module.scss";
 import InfoBox from "../../InfoBox/InfoBox";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  STORE_DOWNLOADS,
-  selectDownloadHistory,
-} from "../../../Redux/features/downlodsSlice";
 import { FaDownload } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 import { FiUsers } from "react-icons/fi";
@@ -25,6 +21,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 const Home = () => {
@@ -105,14 +102,21 @@ const Home = () => {
         />
       </div>
       <div>
-        <BarChart width={500} height={300} data={data1} style={{ border: "1px solid #ccc" }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="count" fill="#8884d8" />
-        </BarChart>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            width={500}
+            height={300}
+            data={data1}
+            style={{ border: "1px solid #ccc" }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
