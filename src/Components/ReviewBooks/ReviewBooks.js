@@ -37,7 +37,7 @@ const ReviewBooks = () => {
       rate,
       review,
       reviewDate: date,
-      createdAt: Timestamp.now().toDate(),
+      createAt: Timestamp.now().toDate(),
     };
     try {
       addDoc(collection(db, "reviews"), reviewConfig);
