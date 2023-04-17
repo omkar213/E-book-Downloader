@@ -90,7 +90,7 @@ const DownloadHistory = () => {
                         <td className={styles.icons}>
                         <Link to={`/review-book/${id}`}>
                           <button className="--btn --btn-primary">
-                            Review Product
+                            Review Books
                           </button>
                         </Link>
                       </td>

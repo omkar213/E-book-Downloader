@@ -11,7 +11,7 @@ const Downloads = () => {
     <>
     {isLoading && <Loader />}
     <div className={styles.table}>
-      <h2>All Books</h2>
+      <h2>Downloaded Books Info</h2>
       {data.length === 0 ? (
         <p>No Downloads Found</p>
       ) : (
