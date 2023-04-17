@@ -105,6 +105,7 @@ const BookDetails = () => {
       userEmail,
       userName,
       name: book.name,
+      id: id,
       downloadDate: date,
       downloadTime: time,
       createAt: Timestamp.now().toDate(),
