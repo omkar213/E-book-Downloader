@@ -11,10 +11,11 @@
 .social-media-icons {
   width: 200px;
   height: 40px;
-  background-color: #fc6e1d;
+  background-color: #007bff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  color: white;
 }
 .about-us-para {
   font-size: 1rem;

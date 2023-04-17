@@ -13,7 +13,7 @@ import Loader from "../../Components/loader/Loader";
 import { toast } from "react-toastify";
 import { auth } from "../../Firebase/config";
 import { db } from "../../Firebase/config";
-import { addDoc, collection } from "firebase/firestore";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { FaGoogle } from "react-icons/fa";
 
 const Register = () => {
@@ -79,6 +79,7 @@ const Register = () => {
           const userDocRef = addDoc(collection(db, "users"), {
             email: user.email,
             uid: user.uid,
+            createAt: Timestamp.now().toDate(),
           });
           // console.log("New user added with ID: ", userDocRef.id);
           navigate("/login");

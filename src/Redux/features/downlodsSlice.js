@@ -19,4 +19,5 @@ export const { STORE_DOWNLOADS } = downloadsSlice.actions;
 // updated selector function
 export const selectDownloadHistory = (state) => state.downloads.downloadHistory;
 
+
 export default downloadsSlice.reducer;
